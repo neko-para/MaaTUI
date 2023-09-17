@@ -1,0 +1,12 @@
+{
+  "name": "@maa/tui-monorepo",
+  "scripts": {
+    "dev": "node pkgs/tui/scripts/watch.js"
+  },
+  "workspaces": [
+    "pkgs/*"
+  ],
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0"
+  }
+}
