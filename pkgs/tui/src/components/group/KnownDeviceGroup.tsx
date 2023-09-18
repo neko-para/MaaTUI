@@ -15,7 +15,9 @@ export function KnownDeviceGroup() {
       case 0:
         return (
           <Observer>
-            {() => <Text underline={focusDevice === row}>{cfg.active === row ? 'x' : ' '}</Text>}
+            {() => (
+              <Text underline={focusDevice === row}>{cfg.activeDevice === row ? 'x' : ' '}</Text>
+            )}
           </Observer>
         )
       case 1:
@@ -50,7 +52,7 @@ export function KnownDeviceGroup() {
               setFocusDevice(v)
             }}
             onSelect={v => {
-              cfg.setActive(v)
+              cfg.setActiveDevice(v)
             }}
           ></Table>
         )}

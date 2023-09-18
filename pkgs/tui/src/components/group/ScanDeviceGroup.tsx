@@ -1,9 +1,8 @@
 import { MaaDevice } from '@maa/loader'
 import { Box, Text } from 'ink'
-import { Observer } from 'mobx-react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
-import { getMaaConfig, toolkit } from '../../maa.js'
+import { toolkit } from '../../maa.js'
 import { config } from '../../stores/config.js'
 import { ButtonGroup, Group, Table } from '../core/index.js'
 
@@ -57,8 +56,8 @@ export function ScanDeviceGroup() {
           if (idx === -1) {
             const nd = [...cfg.device, d]
             cfg.setDevice(nd)
-            if (nd.length === 1 && cfg.active === null) {
-              cfg.setActive(0)
+            if (nd.length === 1 && cfg.activeDevice === null) {
+              cfg.setActiveDevice(0)
             }
           } else {
             const nd = [...cfg.device]

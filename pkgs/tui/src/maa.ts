@@ -7,6 +7,10 @@ export const framework = toolkit.framework
 toolkit.load('./install/bin')
 toolkit.init()
 
+export function uninitMaa() {
+  toolkit.uninit()
+}
+
 export function getMaaConfig() {
   const size = MaaConfig.size(toolkit)
   return {
@@ -18,7 +22,7 @@ export function getMaaConfig() {
 }
 
 export async function initMaa(cfg: Config) {
-  if (cfg.active === null) {
+  if (cfg.activeDevice === null) {
     return null
   }
 
@@ -27,7 +31,7 @@ export async function initMaa(cfg: Config) {
     return null
   }
 
-  const device = cfg.device[cfg.active]
+  const device = cfg.device[cfg.activeDevice]
 
   const hCtrl = MaaController.createAdbController(
     framework,

@@ -4,8 +4,9 @@ import React, { useContext } from 'react'
 
 import { Group } from '../components/core/index.js'
 import { config } from '../stores/config.js'
-import { AndroidDevice } from './AndroidDevice.js'
-import { TaskRun } from './TaskRun.js'
+import { ConfigView } from './ConfigView.js'
+import { DeviceView } from './DeviceView.js'
+import { TaskConfig } from './TaskView.js'
 
 export function ContentView() {
   const cfg = useContext(config)
@@ -15,9 +16,11 @@ export function ContentView() {
       {() => {
         switch (cfg.view) {
           case 'device':
-            return <AndroidDevice></AndroidDevice>
+            return <DeviceView></DeviceView>
+          case 'config':
+            return <ConfigView></ConfigView>
           case 'task':
-            return <TaskRun></TaskRun>
+            return <TaskConfig></TaskConfig>
           default:
             return (
               <Group title="错误">

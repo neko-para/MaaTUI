@@ -1,5 +1,7 @@
-import { Control } from './Control.js'
+import { Preset } from './Preset.js'
+import { controller } from './controller.js'
 
 export const SKLand = {
-  Control
+  Preset,
+  controller
 }

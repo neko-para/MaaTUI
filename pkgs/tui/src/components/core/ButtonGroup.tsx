@@ -5,12 +5,13 @@ import { Table } from './Table.js'
 
 export type Props = {
   item: string[]
-  get: (item: string, idx: number) => ReactElement
+  get?: (item: string, idx: number) => ReactElement
   type?: 'column' | 'row'
   onSelect?: (item: string, idx: number) => void
 }
 
 export function ButtonGroup(props: Props) {
+  const get = props.get ?? (item => <Text>{item}</Text>)
   const type = props.type ?? 'column'
   const [focus, setFocus] = useState<number | null>(0)
 
@@ -19,7 +20,7 @@ export function ButtonGroup(props: Props) {
       case 0:
         return <Text>{row === focus ? '>' : ' '}</Text>
       case 1:
-        return props.get(props.item[row], row)
+        return get(props.item[row], row)
       default:
         return <Box></Box>
     }
@@ -29,7 +30,7 @@ export function ButtonGroup(props: Props) {
     return (
       <Box>
         <Text>{col === focus ? '>' : ' '}</Text>
-        {props.get(props.item[col], col)}
+        {get(props.item[col], col)}
       </Box>
     )
   }

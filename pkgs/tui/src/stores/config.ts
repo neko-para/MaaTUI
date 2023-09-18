@@ -1,25 +1,25 @@
-import { MaaDevice } from '@maa/loader'
+import { MaaConfig, MaaDevice } from '@maa/loader'
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
 import { observable } from 'mobx'
 import { createContext } from 'react'
 
+import { toolkit } from '../maa.js'
+
 const localConfig = 'maatui.config.json'
 
 export interface Config {
   device: MaaDevice[]
-  active: null | number
+  activeDevice: null | number
 
   setDevice: (d: MaaDevice[]) => void
-  setActive: (a: number | null) => void
+  setActiveDevice: (a: number | null) => void
+
+  currentConfig: string | null
+  setCurrentConfig: (c: string | null) => void
 
   view: string
-
   setView: (v: string) => void
-
-  target: 'skland'
-
-  setTarget: (t: 'skland') => void
 
   load: () => Promise<void>
   save: () => Promise<void>
@@ -29,32 +29,33 @@ export const config = createContext<Config>(null!)
 export const initConfig = () => {
   const self = observable({
     device: [],
-    active: null,
+    activeDevice: null,
 
     setDevice: d => {
       self.device = d
     },
-    setActive: a => {
-      self.active = a
+    setActiveDevice: a => {
+      self.activeDevice = a
+    },
+
+    currentConfig: null,
+    setCurrentConfig: (c: string | null) => {
+      self.currentConfig = c
+      if (c) {
+        MaaConfig.setCurrent(toolkit, c)
+      }
     },
 
     view: 'device',
-
     setView: v => {
       self.view = v
-    },
-
-    target: 'skland',
-
-    setTarget: t => {
-      self.target = t
     },
 
     load: async () => {
       if (existsSync(localConfig)) {
         const obj = JSON.parse(await readFile(localConfig, 'utf-8'))
         self.setDevice(obj.device)
-        self.setActive(obj.active)
+        self.setActiveDevice(obj.active)
       }
     },
     save: async () => {
@@ -63,7 +64,7 @@ export const initConfig = () => {
         JSON.stringify(
           {
             device: self.device,
-            active: self.active
+            active: self.activeDevice
           },
           null,
           2

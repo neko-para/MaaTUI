@@ -1,11 +1,13 @@
+import { Text } from 'ink'
 import React, { useContext } from 'react'
 
 import { Group } from '../../components/core/Group.js'
-import { Button } from '../../components/core/index.js'
+import { Button, ButtonGroup } from '../../components/core/index.js'
 import { initMaa } from '../../maa.js'
 import { config } from '../../stores/config.js'
+import { controller } from './controller.js'
 
-export function Control() {
+export function Preset() {
   const cfg = useContext(config)
 
   const play = async () => {
@@ -40,7 +42,18 @@ export function Control() {
   }
   return (
     <Group title="森空岛">
-      <Button text="启动" onClick={play}></Button>
+      <ButtonGroup
+        type="row"
+        item={['签到']}
+        get={str => <Text>{str}</Text>}
+        onSelect={(str, idx) => {
+          switch (idx) {
+            case 0:
+              controller.addConfig()
+              break
+          }
+        }}
+      ></ButtonGroup>
     </Group>
   )
 }

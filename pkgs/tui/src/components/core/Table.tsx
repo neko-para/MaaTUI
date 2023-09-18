@@ -8,6 +8,7 @@ export type Props = {
   gap?: number
   rowHeight?: number
   focus?: boolean
+  focusEvenEmpty?: boolean
   onFocus?: (idx: number | null) => void
   selectCol?: boolean
   onSelect?: (idx: number) => void
@@ -17,7 +18,7 @@ export function Table(props: Props) {
   const selCol = props.selectCol ?? false
 
   const { isFocused } = useFocus({
-    isActive: props.focus && (selCol ? props.col > 0 : props.row > 0)
+    isActive: props.focus && (props.focusEvenEmpty || (selCol ? props.col > 0 : props.row > 0))
   })
   const [focus, setFocus] = useState(0)
 
