@@ -4,14 +4,13 @@ import { computed } from 'mobx'
 import { Observer } from 'mobx-react'
 import React, { useContext } from 'react'
 
-import { getMaaConfig } from '../../maa.js'
 import { config } from '../../stores/config.js'
 import { Group } from '../core/index.js'
 
 export function ConfigTaskGroup() {
   const cfg = useContext(config)
   const task = computed(() => {
-    const cur = getMaaConfig().configs.find(x => x.name === cfg.currentConfig)
+    const cur = cfg.currentConfig
     if (!cur) {
       return []
     }

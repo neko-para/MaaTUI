@@ -4,14 +4,14 @@ import { toolkit } from '../../maa.js'
 
 export const controller = {
   addConfig(name = 'SKLand') {
-    const cfg = MaaConfig.add(toolkit, name)
-    if (!cfg) {
+    const hcfg = MaaConfig.add(toolkit, name)
+    if (!hcfg) {
       return null
     }
-    cfg.description = '森空岛'
-    const ts = cfg.taskSize()
+    hcfg.description = '森空岛'
+    const ts = hcfg.taskSize()
     for (let i = 0; i < ts; i++) {
-      const task = cfg.task(i)
+      const task = hcfg.task(i)
       if (!task) {
         continue
       }
@@ -19,7 +19,7 @@ export const controller = {
         return task
       }
     }
-    const task = cfg.taskClone('skland.sign')
+    const task = hcfg.taskClone('skland.sign')
     if (!task) {
       return null
     }

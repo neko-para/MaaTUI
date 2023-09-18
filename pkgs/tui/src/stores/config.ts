@@ -1,7 +1,7 @@
 import { MaaConfig, MaaDevice } from '@maa/loader'
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
-import { observable } from 'mobx'
+import { action, observable } from 'mobx'
 import { createContext } from 'react'
 
 import { toolkit } from '../maa.js'
@@ -15,8 +15,11 @@ export interface Config {
   setDevice: (d: MaaDevice[]) => void
   setActiveDevice: (a: number | null) => void
 
-  currentConfig: string | null
-  setCurrentConfig: (c: string | null) => void
+  currentConfig: MaaConfig | null
+  setCurrentConfig: (c: MaaConfig | null) => void
+
+  sync: boolean
+  triggerSync: () => void
 
   view: string
   setView: (v: string) => void
@@ -39,16 +42,21 @@ export const initConfig = () => {
     },
 
     currentConfig: null,
-    setCurrentConfig: (c: string | null) => {
+    setCurrentConfig: action((c: MaaConfig | null) => {
       self.currentConfig = c
       if (c) {
-        MaaConfig.setCurrent(toolkit, c)
+        c.setCurrent()
       }
-    },
+    }),
 
     view: 'device',
     setView: v => {
       self.view = v
+    },
+
+    sync: false,
+    triggerSync: () => {
+      self.sync = !self.sync
     },
 
     load: async () => {

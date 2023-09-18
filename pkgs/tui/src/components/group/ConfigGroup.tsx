@@ -1,5 +1,6 @@
 import { MaaConfig } from '@maa/loader'
 import { Box, Text } from 'ink'
+import { autorun, reaction } from 'mobx'
 import { Observer } from 'mobx-react'
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -10,23 +11,13 @@ import { ButtonGroup, Group, Table } from '../core/index.js'
 
 export function ConfigGroup() {
   const cfg = useContext(config)
-  const [maaCfg, setMaaCfg] = useState<
-    {
-      name: string
-      desc: string
-    }[]
-  >([])
+  const [maaCfg, setMaaCfg] = useState<MaaConfig[]>([])
   const [focusConfig, setFocusConfig] = useState<number | null>(null)
 
   const syncMaaCfg = () => {
     const cfgs = getMaaConfig()
-    cfg.setCurrentConfig(cfgs.current?.name ?? null)
-    setMaaCfg(
-      cfgs.configs.map(c => ({
-        name: c.name,
-        desc: c.description
-      }))
-    )
+    cfg.setCurrentConfig(cfgs.current)
+    setMaaCfg(cfgs.configs)
   }
 
   const buildConfig = (row: number, col: number) => {
@@ -34,11 +25,13 @@ export function ConfigGroup() {
       case 0:
         return (
           <Observer>
-            {() => (
-              <Text underline={focusConfig === row}>
-                {maaCfg[row].name === cfg.currentConfig ? 'x' : ' '}
-              </Text>
-            )}
+            {() => {
+              return (
+                <Text underline={focusConfig === row}>
+                  {maaCfg[row].equal(cfg.currentConfig) ? 'x' : ' '}
+                </Text>
+              )
+            }}
           </Observer>
         )
       case 1:
@@ -46,7 +39,7 @@ export function ConfigGroup() {
       case 2:
         return <Text underline={focusConfig === row}>{maaCfg[row].name}</Text>
       case 3:
-        return <Text underline={focusConfig === row}>{maaCfg[row].desc}</Text>
+        return <Text underline={focusConfig === row}>{maaCfg[row].description}</Text>
       default:
         return <Box></Box>
     }
@@ -54,6 +47,12 @@ export function ConfigGroup() {
 
   useEffect(() => {
     syncMaaCfg()
+    return reaction(
+      () => cfg.sync,
+      () => {
+        syncMaaCfg()
+      }
+    )
   }, [])
 
   const inputUsage = useInputHint(
@@ -111,19 +110,23 @@ export function ConfigGroup() {
   return (
     <Group title="配置">
       {inputUsage}
-      <Table
-        row={maaCfg.length}
-        col={4}
-        get={buildConfig}
-        focus
-        focusEvenEmpty
-        onFocus={v => {
-          setFocusConfig(v)
-        }}
-        onSelect={v => {
-          cfg.setCurrentConfig(maaCfg[v].name)
-        }}
-      ></Table>
+      <Observer>
+        {() => (
+          <Table
+            row={maaCfg.length}
+            col={4}
+            get={buildConfig}
+            focus
+            focusEvenEmpty
+            onFocus={v => {
+              setFocusConfig(v)
+            }}
+            onSelect={v => {
+              cfg.setCurrentConfig(maaCfg[v])
+            }}
+          ></Table>
+        )}
+      </Observer>
     </Group>
   )
 }

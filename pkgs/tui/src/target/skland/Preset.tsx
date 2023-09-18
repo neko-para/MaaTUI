@@ -50,6 +50,7 @@ export function Preset() {
           switch (idx) {
             case 0:
               controller.addConfig()
+              cfg.triggerSync()
               break
           }
         }}
