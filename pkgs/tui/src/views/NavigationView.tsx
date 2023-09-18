@@ -9,7 +9,7 @@ export function NavigationGroup() {
   const cfg = useContext(config)
   const info = [
     {
-      text: '设备配置',
+      text: '设备',
       to: 'device'
     },
     {

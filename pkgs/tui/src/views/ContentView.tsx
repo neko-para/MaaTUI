@@ -3,8 +3,8 @@ import { Observer } from 'mobx-react'
 import React, { useContext } from 'react'
 
 import { Group } from '../components/core/index.js'
-import { AndroidDeviceGroup } from '../components/group/AndroidDeviceGroup.js'
 import { config } from '../stores/config.js'
+import { AndroidDevice } from './AndroidDevice.js'
 import { TaskRun } from './TaskRun.js'
 
 export function ContentView() {
@@ -15,7 +15,7 @@ export function ContentView() {
       {() => {
         switch (cfg.view) {
           case 'device':
-            return <AndroidDeviceGroup></AndroidDeviceGroup>
+            return <AndroidDevice></AndroidDevice>
           case 'task':
             return <TaskRun></TaskRun>
           default:

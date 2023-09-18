@@ -1,5 +1,8 @@
+import { existsSync } from 'fs'
+import * as fs from 'fs/promises'
 import { Box } from 'ink'
-import React, { StrictMode } from 'react'
+import { autorun } from 'mobx'
+import React, { StrictMode, useEffect } from 'react'
 
 import { config, initConfig } from './stores/config.js'
 import { ContentView } from './views/ContentView.js'
@@ -16,6 +19,13 @@ function Main() {
 
 export function App() {
   const configValue = initConfig()
+  useEffect(() => {
+    configValue.load().then(() => {
+      autorun(() => {
+        configValue.save()
+      })
+    })
+  }, [])
   return (
     <StrictMode>
       <config.Provider value={configValue}>

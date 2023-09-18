@@ -10,13 +10,20 @@ toolkit.init()
 export function getMaaConfig() {
   const size = MaaConfig.size(toolkit)
   return {
-    configs: Array.from({ length: size }, (_, idx) => MaaConfig.get(toolkit, idx)),
+    configs: Array.from({ length: size }, (_, idx) => MaaConfig.get(toolkit, idx)).filter(
+      (c): c is MaaConfig => c !== null
+    ),
     current: MaaConfig.current(toolkit)
   }
 }
 
 export async function initMaa(cfg: Config) {
   if (cfg.active === null) {
+    return null
+  }
+
+  const curCfg = MaaConfig.current(toolkit)
+  if (!curCfg) {
     return null
   }
 
@@ -35,7 +42,6 @@ export async function initMaa(cfg: Config) {
   const hRes = new MaaResource(framework, (msg, details) => {
     console.log(msg, details)
   })
-  const curCfg = MaaConfig.current(toolkit)
   const hInst = new MaaInstance(framework, (msg, details) => {
     console.log(msg, details)
   })

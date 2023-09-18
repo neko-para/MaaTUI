@@ -1,6 +1,10 @@
 import { MaaDevice } from '@maa/loader'
+import { existsSync } from 'fs'
+import { readFile, writeFile } from 'fs/promises'
 import { observable } from 'mobx'
 import { createContext } from 'react'
+
+const localConfig = 'maatui.config.json'
 
 export interface Config {
   device: MaaDevice[]
@@ -16,6 +20,9 @@ export interface Config {
   target: 'skland'
 
   setTarget: (t: 'skland') => void
+
+  load: () => Promise<void>
+  save: () => Promise<void>
 }
 
 export const config = createContext<Config>(null!)
@@ -41,6 +48,27 @@ export const initConfig = () => {
 
     setTarget: t => {
       self.target = t
+    },
+
+    load: async () => {
+      if (existsSync(localConfig)) {
+        const obj = JSON.parse(await readFile(localConfig, 'utf-8'))
+        self.setDevice(obj.device)
+        self.setActive(obj.active)
+      }
+    },
+    save: async () => {
+      await writeFile(
+        localConfig,
+        JSON.stringify(
+          {
+            device: self.device,
+            active: self.active
+          },
+          null,
+          2
+        )
+      )
     }
   } satisfies Config as Config)
   return self

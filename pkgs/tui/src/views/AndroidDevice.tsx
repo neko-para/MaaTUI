@@ -1,7 +1,14 @@
+import { Box } from 'ink'
 import React from 'react'
 
-import { AndroidDeviceGroup } from '../components/group/AndroidDeviceGroup.js'
+import { KnownDeviceGroup } from '../components/group/KnownDeviceGroup.js'
+import { ScanDeviceGroup } from '../components/group/ScanDeviceGroup.js'
 
 export function AndroidDevice() {
-  return <AndroidDeviceGroup></AndroidDeviceGroup>
+  return (
+    <Box>
+      <KnownDeviceGroup></KnownDeviceGroup>
+      <ScanDeviceGroup></ScanDeviceGroup>
+    </Box>
+  )
 }
