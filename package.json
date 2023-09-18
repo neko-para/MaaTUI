@@ -1,7 +1,8 @@
 {
   "name": "@maa/tui-monorepo",
   "scripts": {
-    "dev": "node pkgs/tui/scripts/watch.js"
+    "dev": "node pkgs/tui/scripts/watch.js",
+    "postinstall": "node scripts/init.mjs"
   },
   "workspaces": [
     "pkgs/*"
