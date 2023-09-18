@@ -1,6 +1,6 @@
-[submodule "pkgs/loader"]
-	path = pkgs/loader
-	url = https://github.com/neko-para/MaaJSLoader
 [submodule "MaaAgentBinary"]
 	path = MaaAgentBinary
 	url = https://github.com/MaaAssistantArknights/MaaAgentBinary
+[submodule "pkgs/loader"]
+	path = pkgs/loader
+	url = https://github.com/neko-para/MaaJSLoader
