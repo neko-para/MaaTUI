@@ -35,11 +35,11 @@ export function ConfigGroup() {
           </Observer>
         )
       case 1:
-        return <Text underline={focusConfig === row}>{row}</Text>
-      case 2:
         return <Text underline={focusConfig === row}>{maaCfg[row].name}</Text>
-      case 3:
+      case 2:
         return <Text underline={focusConfig === row}>{maaCfg[row].description}</Text>
+      case 3:
+        return <Text underline={focusConfig === row}>{maaCfg[row].get('app') ?? '<未设置>'}</Text>
       default:
         return <Box></Box>
     }

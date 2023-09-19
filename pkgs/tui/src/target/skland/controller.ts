@@ -1,17 +1,10 @@
 import { MaaConfig } from '@maa/loader'
 
-import { toolkit } from '../../maa.js'
-
 export const controller = {
-  addConfig(name = 'SKLand') {
-    const hcfg = MaaConfig.add(toolkit, name)
-    if (!hcfg) {
-      return null
-    }
-    hcfg.description = '森空岛'
-    const ts = hcfg.taskSize()
+  addConfig(cfg: MaaConfig) {
+    const ts = cfg.taskSize()
     for (let i = 0; i < ts; i++) {
-      const task = hcfg.task(i)
+      const task = cfg.task(i)
       if (!task) {
         continue
       }
@@ -19,13 +12,23 @@ export const controller = {
         return task
       }
     }
-    const task = hcfg.taskClone('skland.sign')
+    const task = cfg.taskClone('skland.sign')
     if (!task) {
       return null
     }
     task.entry = 'Skland'
-    task.description = '签到的主任务'
+    task.description = '森空岛签到'
     task.enabled = true
+    task.param = {
+      diff_task: {
+        Sub_StartSkland: {
+          package: 'com.hypergryph.skland/com.hypergryph.skland.SplashActivity'
+        },
+        CloseSkland: {
+          package: 'com.hypergryph.skland'
+        }
+      }
+    }
     return task
   }
 }

@@ -49,8 +49,10 @@ export function Preset() {
         onSelect={(str, idx) => {
           switch (idx) {
             case 0:
-              controller.addConfig()
-              cfg.triggerSync()
+              if (cfg.currentConfig) {
+                controller.addConfig(cfg.currentConfig)
+                cfg.triggerSync()
+              }
               break
           }
         }}
