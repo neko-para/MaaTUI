@@ -11,5 +11,7 @@ export const SKLand = {
 
 export default {
   name: '森空岛',
+  id: 'skland',
+  resource: 'SKLand',
   task
 } satisfies TargetPackage

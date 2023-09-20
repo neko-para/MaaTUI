@@ -19,10 +19,6 @@ export function NavigationGroup() {
       to: 'config'
     },
     {
-      text: '任务',
-      to: 'task'
-    },
-    {
       text: '退出',
       to: ''
     }

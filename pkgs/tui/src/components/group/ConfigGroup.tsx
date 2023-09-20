@@ -4,8 +4,9 @@ import { autorun, reaction } from 'mobx'
 import { Observer } from 'mobx-react'
 import React, { useContext, useEffect, useState } from 'react'
 
-import { getMaaConfig, toolkit } from '../../maa.js'
+import { getMaaConfig, initMaa, toolkit } from '../../maa.js'
 import { config } from '../../stores/config.js'
+import { TargetMap } from '../../target/index.js'
 import { useInputHint, whenInput } from '../../utils.js'
 import { ButtonGroup, Group, Table } from '../core/index.js'
 
@@ -102,6 +103,37 @@ export function ConfigGroup() {
         }
         c.del()
         syncMaaCfg()
+      }),
+      whenInput('r', '执行', async () => {
+        const cc = cfg.currentConfig
+        if (cc === null || cfg.activeDevice === null) {
+          return
+        }
+        const app = cc.get('app')
+        if (!app) {
+          return
+        }
+        const maa = await initMaa(cfg)
+        if (!maa) {
+          return
+        }
+        maa.hCtrl.setShortSide(720)
+        if (!(await maa.hRes.load(TargetMap[app].resource))) {
+          await maa.clean()
+          return
+        }
+        if (!maa.hInst.inited) {
+          await maa.clean()
+          return
+        }
+        if (!cc.bind(maa.hInst)) {
+          await maa.clean()
+          return
+        }
+        console.log('inited!')
+        cc.postAll()
+        await cc.waitAll()
+        console.log('finish')
       })
     ],
     focusConfig !== null

@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react'
 
 import { config } from '../../stores/config.js'
 import { TargetPackage, Targets } from '../../target/index.js'
-import { SKLand } from '../../target/skland/index.js'
 import { Group, Table } from '../core/index.js'
 
 function TaskPreset(props: { package: TargetPackage }) {
@@ -35,11 +34,15 @@ function TaskPreset(props: { package: TargetPackage }) {
           if (!c || focusTask === null) {
             return
           }
+          if (![props.package.id, null].includes(c.get('app'))) {
+            return
+          }
           const task = props.package.task[focusTask]
           const hTask = c.taskClone(task.name)
           if (!hTask) {
             return
           }
+          c.set('app', props.package.id)
           hTask.entry = task.entry
           hTask.description = task.description
           hTask.param = task.baseDiff ?? '{}'

@@ -37,5 +37,7 @@ export function defTask<Opt extends Record<string, OptionInfo> = {}>(_: TargetTa
 
 export interface TargetPackage {
   name: string
+  id: string
+  resource: string
   task: TargetTaskInfo[]
 }
